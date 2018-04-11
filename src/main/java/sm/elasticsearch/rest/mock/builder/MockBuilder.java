@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class MockBuilder {
 
-    public Context context = new Context();
+    private MockContext context = new MockContext();
 
     /**
      * Response will be mocked for the httpMethod
@@ -18,20 +18,20 @@ public class MockBuilder {
      */
     public MockBuilder forMethod(String httpMethod) {
         assert null != httpMethod;
-        context.setMethod(httpMethod);
+        context.getRequestContext().setMethod(httpMethod);
         return this;
     }
 
     /**
      * Response will be mocked for this endPoint
-     * The endpoint also supports regular expression
+     * The endpoint also supports java regular expression
      *
      * @param endPoint
      * @return
      */
     public MockBuilder forEndPoint(String endPoint) {
         assert null != endPoint;
-        context.setEndPoint(endPoint);
+        context.getRequestContext().setEndPoint(endPoint);
         return this;
     }
 
@@ -42,7 +42,7 @@ public class MockBuilder {
      * @return
      */
     public MockBuilder forParams(Map<String, String> params) {
-        context.setParams(params);
+        context.getRequestContext().setParams(params);
         return this;
     }
 
@@ -53,7 +53,7 @@ public class MockBuilder {
      * @return
      */
     public MockBuilder forHeaders(Header... headers) {
-        context.setHeaders(headers);
+        context.getRequestContext().setHeaders(headers);
         return this;
     }
 
@@ -76,12 +76,12 @@ public class MockBuilder {
      * @return
      */
     public MockBuilder expectError(Exception error) {
-        context.setExpectedError(error);
+        context.getResponseContext().setError(error);
         return this;
     }
 
     /**
-     * Mocking can expect a http reponse
+     * Mocking can expect a http response
      *
      * @param responseCode
      * @param responseBody
@@ -89,11 +89,11 @@ public class MockBuilder {
      * @param headers
      * @return
      */
-    public MockBuilder expectReponse(int responseCode, String responseBody, ContentType contentType, Header... headers) {
-        context.setExpectedContentType(contentType);
-        context.setExpectedStatusCode(responseCode);
-        context.setExpectedResponseBody(responseBody);
-        context.setExpectedHeaders(headers);
+    public MockBuilder expectResponse(int responseCode, String responseBody, ContentType contentType, Header... headers) {
+        context.getResponseContext().setContentType(contentType);
+        context.getResponseContext().setStatusCode(responseCode);
+        context.getResponseContext().setResponseBody(responseBody);
+        context.getResponseContext().setHeaders(headers);
         return this;
     }
 
@@ -102,7 +102,7 @@ public class MockBuilder {
      *
      * @return the MockContext
      */
-    public Context build() {
+    public MockContext build() {
         ESRestMockCore.putContext(this.context);
         return this.context;
     }

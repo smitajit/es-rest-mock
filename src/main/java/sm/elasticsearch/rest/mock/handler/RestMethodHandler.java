@@ -6,7 +6,7 @@ import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseListener;
 import sm.elasticsearch.rest.mock.ESRestMockCore;
-import sm.elasticsearch.rest.mock.builder.Context;
+import sm.elasticsearch.rest.mock.builder.MockContext;
 import sm.elasticsearch.rest.mock.util.MockException;
 import sm.elasticsearch.rest.mock.util.Utils;
 
@@ -17,9 +17,9 @@ public class RestMethodHandler implements MethodHandler {
 
     public Object invoke(Object o, Method method, Method method1, Object[] objects) throws Throwable {
         MethodArgs methodArgs = extractMethodArgs(objects);
-        Context context = ESRestMockCore.getContext(methodArgs.method, methodArgs.endPoint, methodArgs.params, methodArgs.headers);
+        MockContext context = ESRestMockCore.getContext(methodArgs.method, methodArgs.endPoint, methodArgs.params, methodArgs.headers);
         if (null == context) {
-            throw new MockException("Mocked restcall not found for method [" + methodArgs.method + "] and endpoint [" + methodArgs.endPoint + "]");
+            throw new MockException("Mocked rest call not found for method [" + methodArgs.method + "] and endpoint [" + methodArgs.endPoint + "]");
         }
 
         InvokeResponseListener invokeResponseListener = new InvokeResponseListener(methodArgs.responseListener);

@@ -15,7 +15,7 @@ import org.apache.http.message.BasicRequestLine;
 import org.apache.http.message.BasicStatusLine;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import sm.elasticsearch.rest.mock.builder.Context;
+import sm.elasticsearch.rest.mock.builder.MockContext;
 import sm.elasticsearch.rest.mock.handler.RestMethodHandler;
 
 import java.io.BufferedReader;
@@ -31,22 +31,22 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    public static Response createResponse(Context context) throws Exception {
+    public static Response createResponse(MockContext context) throws Exception {
 
-        if (null != context.getExpectedError()) {
-            throw context.getExpectedError();
+        if (null != context.getResponseContext().getError()) {
+            throw context.getResponseContext().getError();
         }
 
         ProtocolVersion version = new ProtocolVersion("http", 1, 2);
-        RequestLine requestLine = new BasicRequestLine(context.getMethod(), context.getEndPoint(), version);
+        RequestLine requestLine = new BasicRequestLine(context.getRequestContext().getMethod(), context.getRequestContext().getEndPoint(), version);
         HttpHost httpHost = new HttpHost("rest-mock-host", 0, "http");
-        StatusLine statusLine = new BasicStatusLine(version, context.getExpectedStatusCode(), "");
+        StatusLine statusLine = new BasicStatusLine(version, context.getResponseContext().getStatusCode(), "");
         BasicHttpEntity basicHttpEntity = new BasicHttpEntity();
-        basicHttpEntity.setContent(new ByteArrayInputStream(context.getExpectedResponseBody().getBytes()));
-        basicHttpEntity.setContentType(context.getExpectedContentType().toString());
+        basicHttpEntity.setContent(new ByteArrayInputStream(context.getResponseContext().getResponseBody().getBytes()));
+        basicHttpEntity.setContentType(context.getResponseContext().getContentType().toString());
         HttpResponse response = new BasicHttpResponse(statusLine);
-        if (null != context.getExpectedHeaders()) {
-            response.setHeaders(context.getExpectedHeaders());
+        if (null != context.getResponseContext().getHeaders()) {
+            response.setHeaders(context.getResponseContext().getHeaders());
         }
         response.setEntity(basicHttpEntity);
 

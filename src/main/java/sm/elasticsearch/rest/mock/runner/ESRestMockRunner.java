@@ -4,7 +4,11 @@ import javassist.*;
 import org.elasticsearch.client.RestClient;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+import sm.elasticsearch.rest.mock.util.MockException;
 
+/**
+ * Junit runner which instrument the RestClientBuilder class to return the Proxied class uses the mocked request reponse instead of actually sending the data over network
+ */
 public class ESRestMockRunner extends BlockJUnit4ClassRunner {
 
     /**
@@ -18,7 +22,7 @@ public class ESRestMockRunner extends BlockJUnit4ClassRunner {
         try {
             updateClass();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new InitializationError(e);
         }
     }
 

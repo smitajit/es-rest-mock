@@ -35,7 +35,7 @@ public class ExampleTest {
         ESRestMockCore.newBuilder()
                 .forMethod("GET")
                 .forEndPoint("/_cat/indices")
-                .expectReponse(200, mockedResponse, ContentType.APPLICATION_OCTET_STREAM)
+                .expectResponse(200, mockedResponse, ContentType.APPLICATION_OCTET_STREAM)
                 .build();
         try {
             Response response = lClient.performRequest("GET", "/_cat/indices");
@@ -59,7 +59,7 @@ public class ExampleTest {
         ESRestMockCore.newBuilder()
                 .forMethod("GET")
                 .forEndPoint("/.monitoring-kibana-6-2018.04.09/doc/1")
-                .expectReponse(200 , mockedReponse , ContentType.APPLICATION_JSON)
+                .expectResponse(200 , mockedReponse , ContentType.APPLICATION_JSON)
                 .build();
 
         GetRequest request = new GetRequest(".monitoring-kibana-6-2018.04.09" , "doc" , "1");
