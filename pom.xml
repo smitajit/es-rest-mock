@@ -8,7 +8,7 @@
         <version>9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>sm.elasticsearch.rest.mock</groupId>
+    <groupId>com.github.smitajitk</groupId>
     <artifactId>es-rest-mock</artifactId>
     <version>1.0.0</version>
     <name>Elastic Search rest client mock</name>
@@ -57,7 +57,7 @@
     </licenses>
     <developers>
         <developer>
-            <name>Smitajit Biswalr</name>
+            <name>Smitajit Biswal</name>
             <email>msmitajit@hotmail.com</email>
             <organization>NA</organization>
             <organizationUrl>https://github.com/smitajit/es-rest-mock</organizationUrl>

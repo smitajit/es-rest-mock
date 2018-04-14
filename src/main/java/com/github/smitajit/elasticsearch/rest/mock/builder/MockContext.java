@@ -1,4 +1,4 @@
-package sm.elasticsearch.rest.mock.builder;
+package com.github.smitajit.elasticsearch.rest.mock.builder;
 
 import org.apache.http.Header;
 import org.apache.http.entity.ContentType;

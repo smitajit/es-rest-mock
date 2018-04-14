@@ -1,4 +1,4 @@
-package sm.elasticsearch.rest.mock.builder;
+package com.github.smitajit.elasticsearch.rest.mock.builder;
 
 import org.apache.http.message.BasicHeader;
 import org.junit.Assert;
@@ -124,7 +124,7 @@ public class ContextTest {
         context.setGlobalContext(true);
 
 
-        context.getRequestContext().setHeaders(new BasicHeader("key" , "value"));
+        context.getRequestContext().setHeaders(new BasicHeader("key", "value"));
 
 
         MockContext context1 = new MockContext();
@@ -133,7 +133,7 @@ public class ContextTest {
         Map<String, String> params1 = new HashMap<>();
         params1.put("key", "value");
         context1.getRequestContext().setParams(params);
-        context1.getRequestContext().setHeaders(new BasicHeader("key" , "value"));
+        context1.getRequestContext().setHeaders(new BasicHeader("key", "value"));
 
 
         int result = context.compareTo(context1);

@@ -1,14 +1,13 @@
-package sm.elasticsearch.rest.mock;
+package com.github.smitajit.elasticsearch.rest.mock;
 
-import sm.elasticsearch.rest.mock.builder.MockContext;
-import sm.elasticsearch.rest.mock.builder.MockBuilder;
+import com.github.smitajit.elasticsearch.rest.mock.builder.MockContext;
+import com.github.smitajit.elasticsearch.rest.mock.builder.MockBuilder;
 import org.apache.http.Header;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ESRestMockCore {
 

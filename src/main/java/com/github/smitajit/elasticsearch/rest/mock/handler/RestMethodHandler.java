@@ -1,14 +1,14 @@
-package sm.elasticsearch.rest.mock.handler;
+package com.github.smitajit.elasticsearch.rest.mock.handler;
 
+import com.github.smitajit.elasticsearch.rest.mock.ESRestMockCore;
 import javassist.util.proxy.MethodHandler;
 import org.apache.http.Header;
 import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseListener;
-import sm.elasticsearch.rest.mock.ESRestMockCore;
-import sm.elasticsearch.rest.mock.builder.MockContext;
-import sm.elasticsearch.rest.mock.util.MockException;
-import sm.elasticsearch.rest.mock.util.Utils;
+import com.github.smitajit.elasticsearch.rest.mock.builder.MockContext;
+import com.github.smitajit.elasticsearch.rest.mock.util.MockException;
+import com.github.smitajit.elasticsearch.rest.mock.util.Utils;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -30,6 +30,32 @@ public class RestMethodHandler implements MethodHandler {
             invokeResponseListener.onFailure(e);
         }
         return invokeResponseListener.get();
+    }
+
+    private MethodArgs extractMethodArgs(Object[] args) {
+        if (args.length < 2) {
+            throw new MockException("Method and endpoint not found for Rest the call");
+        }
+
+        MethodArgs mArgs = new MethodArgs();
+        mArgs.method = String.valueOf(args[0]);
+        mArgs.endPoint = String.valueOf(args[1]);
+
+        if (args.length > 2) {
+            for (int i = 2; i < args.length; i++) {
+                Object arg = args[i];
+                if (arg instanceof Map) {
+                    mArgs.params = (Map<String, String>) arg;
+                } else if (arg instanceof Header[]) {
+                    mArgs.headers = (Header[]) arg;
+                } else if (arg instanceof HttpAsyncResponseConsumerFactory) {
+                    mArgs.httpAsyncResponseConsumerFactory = (HttpAsyncResponseConsumerFactory) arg;
+                } else if (arg instanceof ResponseListener) {
+                    mArgs.responseListener = (ResponseListener) arg;
+                }
+            }
+        }
+        return mArgs;
     }
 
     class InvokeResponseListener implements ResponseListener {
@@ -67,32 +93,6 @@ public class RestMethodHandler implements MethodHandler {
                 return this.response;
             }
         }
-    }
-
-    private MethodArgs extractMethodArgs(Object[] args) {
-        if (args.length < 2) {
-            throw new MockException("Method and endpoint not found for Rest the call");
-        }
-
-        MethodArgs mArgs = new MethodArgs();
-        mArgs.method = String.valueOf(args[0]);
-        mArgs.endPoint = String.valueOf(args[1]);
-
-        if (args.length > 2) {
-            for (int i = 2; i < args.length; i++) {
-                Object arg = args[i];
-                if (arg instanceof Map) {
-                    mArgs.params = (Map<String, String>) arg;
-                } else if (arg instanceof Header[]) {
-                    mArgs.headers = (Header[]) arg;
-                } else if (arg instanceof HttpAsyncResponseConsumerFactory) {
-                    mArgs.httpAsyncResponseConsumerFactory = (HttpAsyncResponseConsumerFactory) arg;
-                } else if (arg instanceof ResponseListener) {
-                    mArgs.responseListener = (ResponseListener) arg;
-                }
-            }
-        }
-        return mArgs;
     }
 
     class MethodArgs {

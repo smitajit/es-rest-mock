@@ -1,4 +1,4 @@
-package sm.elasticsearch.rest.mock;
+package com.github.smitajit.elasticsearch.rest.mock;
 
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import sm.elasticsearch.rest.mock.runner.ESRestMockRunner;
-import sm.elasticsearch.rest.mock.util.Utils;
+import com.github.smitajit.elasticsearch.rest.mock.runner.ESRestMockRunner;
+import com.github.smitajit.elasticsearch.rest.mock.util.Utils;
 
 import java.io.IOException;
 
@@ -47,7 +47,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void testGetIndexRequest(){
+    public void testGetIndexRequest() {
 
         String mockedReponse = "{\n" +
                 "  \"_index\": \".monitoring-kibana-6-2018.04.09\",\n" +
@@ -59,10 +59,10 @@ public class ExampleTest {
         ESRestMockCore.newBuilder()
                 .forMethod("GET")
                 .forEndPoint("/.monitoring-kibana-6-2018.04.09/doc/1")
-                .expectResponse(200 , mockedReponse , ContentType.APPLICATION_JSON)
+                .expectResponse(200, mockedReponse, ContentType.APPLICATION_JSON)
                 .build();
 
-        GetRequest request = new GetRequest(".monitoring-kibana-6-2018.04.09" , "doc" , "1");
+        GetRequest request = new GetRequest(".monitoring-kibana-6-2018.04.09", "doc", "1");
 
         try {
             GetResponse response = hClient.get(request);

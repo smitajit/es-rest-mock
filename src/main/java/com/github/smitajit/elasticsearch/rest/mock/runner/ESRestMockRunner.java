@@ -1,10 +1,9 @@
-package sm.elasticsearch.rest.mock.runner;
+package com.github.smitajit.elasticsearch.rest.mock.runner;
 
 import javassist.*;
 import org.elasticsearch.client.RestClient;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-import sm.elasticsearch.rest.mock.util.MockException;
 
 /**
  * Junit runner which instrument the RestClientBuilder class to return the Proxied class uses the mocked request reponse instead of actually sending the data over network
@@ -38,7 +37,7 @@ public class ESRestMockRunner extends BlockJUnit4ClassRunner {
         CtMethod build = findMethod(builderCtClass, "build");
         build.insertBefore("if(this.proxyClient) {" +
                 "" +
-                "return sm.elasticsearch.rest.mock.util.Utils.getProxiedClient();" +
+                "return com.github.smitajit.elasticsearch.rest.mock.util.Utils.getProxiedClient();" +
                 "}");
         builderCtClass.toClass();
     }

@@ -1,5 +1,6 @@
-package sm.elasticsearch.rest.mock.util;
+package com.github.smitajit.elasticsearch.rest.mock.util;
 
+import com.github.smitajit.elasticsearch.rest.mock.handler.RestMethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
 import org.apache.http.Header;
@@ -15,8 +16,7 @@ import org.apache.http.message.BasicRequestLine;
 import org.apache.http.message.BasicStatusLine;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import sm.elasticsearch.rest.mock.builder.MockContext;
-import sm.elasticsearch.rest.mock.handler.RestMethodHandler;
+import com.github.smitajit.elasticsearch.rest.mock.builder.MockContext;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
