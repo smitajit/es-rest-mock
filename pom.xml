@@ -8,7 +8,7 @@
         <version>9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.smitajitk</groupId>
+    <groupId>com.github.smitajit</groupId>
     <artifactId>es-rest-mock</artifactId>
     <version>1.0.0</version>
     <name>Elastic Search rest client mock</name>
