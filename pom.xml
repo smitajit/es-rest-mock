@@ -11,6 +11,9 @@
     <groupId>sm.elasticsearch.rest.mock</groupId>
     <artifactId>es-rest-mock</artifactId>
     <version>1.0.0</version>
+    <name>Elastic Search rest client mock</name>
+    <description>A simple Mock framework for mock elastic search rest calls</description>
+    <url>https://github.com/smitajit/es-rest-mock</url>
     <properties>
         <junit-version>4.12</junit-version>
         <javassist-version>3.12.1.GA</javassist-version>
@@ -46,4 +49,18 @@
             </plugin>
         </plugins>
     </build>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Smitajit Biswalr</name>
+            <email>msmitajit@hotmail.com</email>
+            <organization>NA</organization>
+            <organizationUrl>https://github.com/smitajit/es-rest-mock</organizationUrl>
+        </developer>
+    </developers>
 </project>
