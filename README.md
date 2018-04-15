@@ -3,7 +3,7 @@
 A simple framework to mock the elasticsearch rest client.
 Designed to Unit test High and Low Level Elastic searh rest client operations
 
-#Dependency
+# Dependency
 ```xml
 <dependency>
     <groupId>com.github.smitajit</groupId>
