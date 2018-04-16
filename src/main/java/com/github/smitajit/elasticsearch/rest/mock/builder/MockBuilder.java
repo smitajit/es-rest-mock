@@ -60,11 +60,10 @@ public class MockBuilder {
     /**
      * Wheather the rest call mock should effect globally or threadlocal specific
      *
-     * @param useGlobal will publish the context to global scope. Default is ThreadLocal scope
      * @return
      */
-    public MockBuilder useGlobal(boolean useGlobal) {
-        this.context.setGlobalContext(useGlobal);
+    public MockBuilder useGlobal() {
+        this.context.setGlobalContext(true);
         return this;
     }
 
