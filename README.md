@@ -7,23 +7,29 @@ Designed to Unit test both High and Low Level Elastic search rest client operati
 Use the ESRestMockRunner.class to tun the UT. which will instrument the ElasticSearch builder and return a Mocked object
 ESRestMockCore.newMocker() will return a new builder where expected Response can be added for particular http method, endpoint , params and headers
 it also supports expecting and error instead of Response
-
+```java
 ESRestMockCore.newMocker()
                 .forMethod("GET")
                 .forEndPoint("/_cat/indices")
                 .expectResponse(200, mockedResponse, ContentType.APPLICATION_OCTET_STREAM)
                 .build()
+```
 In above code we are expecting a mockedResponse for method GET and endpoint "/_cat/indices"
 
+```java
 ESRestMockCore.newMocker()
                 .forMethod("GET")
                 .forEndPoint("/_cat/indices")
                 .expectError(new IOException("mocked exception"))
                 .mock();
+```
 In above code we are expecting an error for method GET and for endPoint "/_cat/indices"
 
 We can add more generic endPoint matching by providing Regular expression for endpoint ex : "/_cat/.*"
 The builder also support expecting for headers and parameters
+
+Note : The above mock contexts will be stores in ThreadLocal cache. To use the mocking accors multiple threads use useGlobal().
+ThreadLocal contexs will have more priority than the Global contexts.
 
 # Dependency
 ```xml
