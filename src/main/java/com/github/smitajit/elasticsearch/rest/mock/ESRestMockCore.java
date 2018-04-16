@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 
 public class ESRestMockCore {
 
-    private static ThreadLocal<List<MockContext>> tLocalContext = ThreadLocal.withInitial(ArrayList::new);
-    private static List<MockContext> globalContext = new ArrayList<>();
+    private static ThreadLocal<LinkedList<MockContext>> tLocalContext = ThreadLocal.withInitial(LinkedList::new);
+    private static LinkedList<MockContext> globalContext = new LinkedList<>();
 
     /**
      * Puts the context in to ThreadLocal cache or globalCache
@@ -21,9 +21,9 @@ public class ESRestMockCore {
      */
     public static void putContext(MockContext context) {
         if (context.isGlobalContext()) {
-            globalContext.add(context);
+            globalContext.addFirst(context);
         } else {
-            tLocalContext.get().add(context);
+            tLocalContext.get().addFirst(context);
         }
     }
 
