@@ -13,8 +13,8 @@ public class MockBuilder {
     /**
      * Response will be mocked for the httpMethod
      *
-     * @param httpMethod
-     * @return
+     * @param httpMethod the expected httpMethod
+     * @return MockBuilder
      */
     public MockBuilder forMethod(String httpMethod) {
         assert null != httpMethod;
@@ -26,8 +26,8 @@ public class MockBuilder {
      * Response will be mocked for this endPoint
      * The endpoint also supports java regular expression
      *
-     * @param endPoint
-     * @return
+     * @param endPoint expected endPoint
+     * @return MockBuilder
      */
     public MockBuilder forEndPoint(String endPoint) {
         assert null != endPoint;
@@ -38,8 +38,8 @@ public class MockBuilder {
     /**
      * Response will be mocked for these params
      *
-     * @param params
-     * @return
+     * @param params expected params
+     * @return MockBuilder
      */
     public MockBuilder forParams(Map<String, String> params) {
         context.getRequestContext().setParams(params);
@@ -49,7 +49,7 @@ public class MockBuilder {
     /**
      * Response will be mocked for this headers
      *
-     * @param headers
+     * @param headers expected headers
      * @return
      */
     public MockBuilder forHeaders(Header... headers) {
@@ -60,11 +60,11 @@ public class MockBuilder {
     /**
      * Wheather the rest call mock should effect globally or threadlocal specific
      *
-     * @param useGLobal
+     * @param useGlobal will publish the context to global scope. Default is ThreadLocal scope
      * @return
      */
-    public MockBuilder useGlobal(boolean useGLobal) {
-        this.context.setGlobalContext(useGLobal);
+    public MockBuilder useGlobal(boolean useGlobal) {
+        this.context.setGlobalContext(useGlobal);
         return this;
     }
 
@@ -72,8 +72,8 @@ public class MockBuilder {
     /**
      * Mocking can expect a error response
      *
-     * @param error
-     * @return
+     * @param error expected error
+     * @return MockBuilder
      */
     public MockBuilder expectError(Exception error) {
         context.getResponseContext().setError(error);
@@ -83,11 +83,11 @@ public class MockBuilder {
     /**
      * Mocking can expect a http response
      *
-     * @param responseCode
-     * @param responseBody
-     * @param contentType
-     * @param headers
-     * @return
+     * @param responseCode expected responseCode
+     * @param responseBody expected responseBody
+     * @param contentType expected contentType
+     * @param headers expected headers
+     * @return MockBuilder
      */
     public MockBuilder expectResponse(int responseCode, String responseBody, ContentType contentType, Header... headers) {
         context.getResponseContext().setContentType(contentType);
@@ -102,7 +102,7 @@ public class MockBuilder {
      *
      * @return the MockContext
      */
-    public MockContext build() {
+    public MockContext mock() {
         ESRestMockCore.putContext(this.context);
         return this.context;
     }

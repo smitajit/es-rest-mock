@@ -11,14 +11,13 @@ import java.util.function.Consumer;
 
 public class ESRestMockCore {
 
-    private static ThreadLocal<List<MockContext>> tLocalContext = ThreadLocal.withInitial(() -> new ArrayList<>());
+    private static ThreadLocal<List<MockContext>> tLocalContext = ThreadLocal.withInitial(ArrayList::new);
     private static List<MockContext> globalContext = new ArrayList<>();
-
 
     /**
      * Puts the context in to ThreadLocal cache or globalCache
      *
-     * @param context
+     * @param context the mocked context
      */
     public static void putContext(MockContext context) {
         if (context.isGlobalContext()) {
@@ -31,11 +30,11 @@ public class ESRestMockCore {
     /**
      * Gets the most matched contexts. Threadlocal match has more score than global match
      *
-     * @param method
-     * @param endPoint
-     * @param params
-     * @param headers
-     * @return
+     * @param method called method
+     * @param endPoint called endPoint
+     * @param params called params
+     * @param headers called headers
+     * @return the mock context
      */
     public static MockContext getContext(String method, String endPoint, Map<String, String> params, Header... headers) {
 
@@ -55,7 +54,6 @@ public class ESRestMockCore {
                 prevScore.set(res);
                 result.set(cachedContext);
             }
-
         };
 
         tLocalContext.get().forEach(compareAndUpdate);
@@ -68,8 +66,19 @@ public class ESRestMockCore {
     /**
      * @return a new MockBuilder
      */
-    public static MockBuilder newBuilder() {
+    public static MockBuilder newMocker() {
         return new MockBuilder();
     }
 
+    /**
+     * Clears the MockContext cache. if clearGlobalCache then global cache will also be cleared
+     * @param clearGlobalCache flag to clear the global context cache
+     */
+    public static void clear(boolean clearGlobalCache) {
+        tLocalContext.get().clear();
+        if(clearGlobalCache) {
+            globalContext.clear();
+        }
+
+    }
 }

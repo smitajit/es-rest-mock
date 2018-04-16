@@ -49,7 +49,7 @@ public class MockContext implements Comparable<MockContext> {
         if (null != actualParams) {
             if (null != trappedParams) {
                 for (String paramName : actualParams.keySet()) {
-                    if (null != trappedParams.get(paramName)) {
+                    if (null != trappedParams.get(paramName) && trappedParams.get(paramName).equals(actualParams.get(paramName))) {
                         score.incrementAndGet();
                     }
                 }
