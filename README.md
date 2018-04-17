@@ -12,7 +12,7 @@ ESRestMockCore.newMocker()
                 .forMethod("GET")
                 .forEndPoint("/_cat/indices")
                 .expectResponse(200, mockedResponse, ContentType.APPLICATION_OCTET_STREAM)
-                .build()
+                .mock()
 ```
 In above code we are expecting a mockedResponse for method GET and endpoint "/_cat/indices"
 
