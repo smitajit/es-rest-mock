@@ -63,7 +63,9 @@ public class MockContext implements Comparable<MockContext> {
             if (null != trappedHeaders) {
                 for (Header h : actualHeaders) {
                     for (Header h1 : trappedHeaders) {
-                        if (h1.getName().equals(h.getName())) {
+                        String trappedHeaderName = h1.getName();
+                        String actualHeaderName = h.getName();
+                        if (trappedHeaderName.equals(actualHeaderName) && h1.getValue().equals(h.getValue())) {
                             score.incrementAndGet();
                         }
                     }

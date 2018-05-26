@@ -1,14 +1,10 @@
 package com.github.smitajit.elasticsearch.rest.mock.util;
 
+import com.github.smitajit.elasticsearch.rest.mock.builder.MockContext;
 import com.github.smitajit.elasticsearch.rest.mock.handler.RestMethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.RequestLine;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.message.BasicHttpResponse;
@@ -16,14 +12,8 @@ import org.apache.http.message.BasicRequestLine;
 import org.apache.http.message.BasicStatusLine;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import com.github.smitajit.elasticsearch.rest.mock.builder.MockContext;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
@@ -31,15 +21,18 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
+    private static final String MOCK_ES_HOST = "rest-mock-host";
+    private static final int MOCK_ES_PORT = 0;
+    private static final String MOCK_ES_PROTOCOL = "http";
+
     public static Response createResponse(MockContext context) throws Exception {
 
         if (null != context.getResponseContext().getError()) {
             throw context.getResponseContext().getError();
         }
-
-        ProtocolVersion version = new ProtocolVersion("http", 1, 2);
+        ProtocolVersion version = new ProtocolVersion(MOCK_ES_PROTOCOL, 1, 2);
         RequestLine requestLine = new BasicRequestLine(context.getRequestContext().getMethod(), context.getRequestContext().getEndPoint(), version);
-        HttpHost httpHost = new HttpHost("rest-mock-host", 0, "http");
+        HttpHost httpHost = new HttpHost(MOCK_ES_HOST, MOCK_ES_PORT, MOCK_ES_PROTOCOL);
         StatusLine statusLine = new BasicStatusLine(version, context.getResponseContext().getStatusCode(), "");
         BasicHttpEntity basicHttpEntity = new BasicHttpEntity();
         basicHttpEntity.setContent(new ByteArrayInputStream(context.getResponseContext().getResponseBody().getBytes()));
@@ -49,7 +42,6 @@ public class Utils {
             response.setHeaders(context.getResponseContext().getHeaders());
         }
         response.setEntity(basicHttpEntity);
-
         return doCreateResponse(requestLine, httpHost, response);
     }
 
@@ -68,37 +60,34 @@ public class Utils {
         factory.setSuperclass(RestClient.class);
         Class clazz = factory.createClass();
 
-        Constructor c1 = null;
-        Constructor[] constructors = clazz.getConstructors();
-        for (Constructor c : constructors
-                ) {
-            c1 = c;
-        }
+        //getting the first Constructor
+        Constructor constructors = clazz.getConstructors()[0];
+        constructors.setAccessible(true);
 
-
-        Class[] parameterTypes = c1.getParameterTypes();
+        Class[] parameterTypes = constructors.getParameterTypes();
         Object[] args = new Object[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
             args[i] = getDummyArgument(parameterTypes[i]);
         }
 
-        Object[] args1 = new Object[]{
-                null
-                , 0l
-                , new Header[]{}
-                , new HttpHost[]{new HttpHost("rest-mock-host", 0)}
-                , ""
-                , null
-        };
-
-        Object instance = c1.newInstance(args1);
+        Object instance = constructors.newInstance(args);
 
         ((ProxyObject) instance).setHandler(new RestMethodHandler());
         return (RestClient) instance;
     }
 
-    public static Object getDummyArgument(Class type) {
+    private static Object getDummyArgument(Class type) {
         if (type.equals(CloseableHttpAsyncClient.class)) {
+            return null;
+        } else if (type.equals(long.class)) {
+            return 0l;
+        } else if (type.equals(Header[].class)) {
+            return new Header[]{};
+        } else if (type.equals(HttpHost[].class)) {
+            return new HttpHost[]{new HttpHost(MOCK_ES_HOST, MOCK_ES_PORT)};
+        } else if (type.equals(String.class)) {
+            return "";
+        } else if (type.equals(RestClient.FailureListener.class)) {
             return null;
         }
         return null;

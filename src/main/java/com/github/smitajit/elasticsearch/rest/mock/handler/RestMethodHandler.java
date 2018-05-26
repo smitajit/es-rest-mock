@@ -36,23 +36,20 @@ public class RestMethodHandler implements MethodHandler {
         if (args.length < 2) {
             throw new MockException("Method and endpoint not found for Rest the call");
         }
-
         MethodArgs mArgs = new MethodArgs();
         mArgs.method = String.valueOf(args[0]);
         mArgs.endPoint = String.valueOf(args[1]);
 
-        if (args.length > 2) {
-            for (int i = 2; i < args.length; i++) {
-                Object arg = args[i];
-                if (arg instanceof Map) {
-                    mArgs.params = (Map<String, String>) arg;
-                } else if (arg instanceof Header[]) {
-                    mArgs.headers = (Header[]) arg;
-                } else if (arg instanceof HttpAsyncResponseConsumerFactory) {
-                    mArgs.httpAsyncResponseConsumerFactory = (HttpAsyncResponseConsumerFactory) arg;
-                } else if (arg instanceof ResponseListener) {
-                    mArgs.responseListener = (ResponseListener) arg;
-                }
+        for (int i = 2; i < args.length; i++) {
+            Object arg = args[i];
+            if (arg instanceof Map) {
+                mArgs.params = (Map<String, String>) arg;
+            } else if (arg instanceof Header[]) {
+                mArgs.headers = (Header[]) arg;
+            } else if (arg instanceof HttpAsyncResponseConsumerFactory) {
+                mArgs.httpAsyncResponseConsumerFactory = (HttpAsyncResponseConsumerFactory) arg;
+            } else if (arg instanceof ResponseListener) {
+                mArgs.responseListener = (ResponseListener) arg;
             }
         }
         return mArgs;
