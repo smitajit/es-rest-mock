@@ -1,12 +1,20 @@
 # es-rest-mock
 
 A simple framework to mock the elasticsearch rest client.
-Designed to Unit test both High and Low Level Elastic search rest client operations
+Designed to Unit test both High and Low Level elasticsearch rest client operations.
 
 ## Concepts
-Use the ESRestMockRunner.class to tun the UT. which will instrument the ElasticSearch builder and return a Mocked object
-ESRestMockCore.newMocker() will return a new builder where expected Response can be added for particular http method, endpoint , params and headers
-it also supports expecting and error instead of Response
+This library consists of 2 parts
+* ESRestMockCore
+  * This class provides APIs to mock elastic-search response
+  * It follows builder patters to build mocked elastic-search responses based on http method, endpoint, parameters and headers
+  * It also provides APIs to mock error reposnses
+* ESRestMockRunner
+  * This class extends BlockJUnit4ClassRunner
+  * The primary job of this class is to intercept elasitc-search's http call and return mocked reponse
+  
+Examples below:
+
 ```java
 ESRestMockCore.newMocker()
                 .forMethod("GET")
@@ -14,7 +22,7 @@ ESRestMockCore.newMocker()
                 .expectResponse(200, mockedResponse, ContentType.APPLICATION_OCTET_STREAM)
                 .mock();
 ```
-In above code we are expecting a mockedResponse for method GET and endpoint "/_cat/indices"
+The above code snippet expects a mockedResponse for method GET and endpoint "/_cat/indices"
 
 ```java
 ESRestMockCore.newMocker()
@@ -23,13 +31,12 @@ ESRestMockCore.newMocker()
                 .expectError(new IOException("mocked exception"))
                 .mock();
 ```
-In above code we are expecting an error for method GET and for endPoint "/_cat/indices"
+The above code snippet expects an error for method GET and for endPoint "/_cat/indices"
 
 We can add more generic endPoint matching by providing Regular expression for endpoint ex : "/_cat/.*"
-The builder also support expecting for headers and parameters
 
-Note : The above mock contexts will be stores in ThreadLocal cache. To use the mocking accors multiple threads use useGlobal().
-ThreadLocal contexs will have more priority than the Global contexts.
+Note : The above mock contexts will be stored in ThreadLocal cache. To use the mocking across multiple threads, use useGlobal().
+ThreadLocal contexts is of higher priority than the Global contexts.
 
 # Dependency
 ```xml
