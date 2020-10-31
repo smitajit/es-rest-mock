@@ -15,7 +15,7 @@
     <description>A simple Mock framework for mock elastic search rest calls</description>
     <url>https://github.com/smitajit/es-rest-mock</url>
     <properties>
-        <junit-version>4.12</junit-version>
+        <junit-version>4.13.1</junit-version>
         <javassist-version>3.12.1.GA</javassist-version>
         <elastic-search-client-version>6.2.3</elastic-search-client-version>
     </properties>
